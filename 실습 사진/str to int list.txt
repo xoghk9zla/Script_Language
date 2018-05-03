@@ -1,0 +1,4 @@
+data = input("1~100사이정수입력")
+2 3 312 13 33
+data  = data.split()
+data = [eval(i) for i in data]
