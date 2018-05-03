@@ -1,0 +1,124 @@
+for i in range(start, stop, step) // range(1, 10, 1) 1부터 9까지 1씩 증가하라
+
+data = input().split() #여러개를 한번에 입력(공백으로 구분)
+data = [eval(i) for i in data] #문자열을 리스트로 변환
+
+#ASCII to char
+chr(iNum)
+#char to ASCII
+ord(ch1)
+
+# r=읽기모드,w=쓰기모드, a=쓰기+이어쓰기, +=읽기+쓰기모드, b=바이너리모드, t=텍스트모드
+f = open("test.txt", 'w')
+f.write("파일에 작성할 내용")
+f.close()
+
+f = open("test.txt")
+f.read()
+f.close()
+
+class CPerson():
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    #__str__함수는 문자열을 반환해서 출력한다.
+    def __str__(self):
+        return "이름: {0}, 나이: {1}".format(self.name, self.age)
+
+class CStudent(CPerson):
+    def __init__(self, name, age, grade):
+        #super부모의 데이터를 가져옴 self를 안써도됨
+        super().__init__(name, age)
+        self.grade = grade
+
+    def __str__(self):
+        return super().__str__() + ", 학년: {0}".format(self.grade)
+
+#숫자순서 뒤집기
+def reverse(number):
+    result = 0
+
+    while number > 0:
+        result = result * 10 + (number % 10)
+        number = number // 10
+
+    return result
+
+#로또 숫자 뽑기
+import random
+
+result = []
+number = 0
+
+def Check_Overlap(number, data):
+    for i in data:
+        if number == i:
+            return True
+    return False
+
+for i in range(6):
+    number = random.randint(1, 45)
+    while(Check_Overlap(number, result)):
+        number = random.randint(1, 45)
+    result.append(number)
+
+print(result)
+
+#몫과 나머지가 같은 수
+n = int(input())
+
+sum = 0
+
+for i in range(1,n):
+    sum += n*i +i
+    
+print(sum)
+
+#거꾸로 구구단 - 제일 큰 수 출력
+strList = input().split()
+
+n = eval(strList[0])
+k = eval(strList[1])
+
+index = 0
+data = []
+biggest_number = 0
+
+def reverse(number):
+    result = 0
+
+    while number > 0:
+        result = result * 10 + (number % 10)
+        number = number // 10
+    return result
+
+for i in range(k):
+    data.append(n * (i + 1))
+
+for i in data:
+    data[index] = reverse(i)
+    index += 1
+
+for i in data:
+    if i > biggest_number:
+        biggest_number = i
+
+print(biggest_number)
+
+#서버
+strList = input().split()
+
+n = eval(strList[0])
+t = eval(strList[1])
+
+strList = input().split()
+intList = [eval(i) for i in strList]
+
+sum = 0
+
+for i in range(n):
+    sum += intList[i]
+    if sum > t:
+        print(i)
+        break
