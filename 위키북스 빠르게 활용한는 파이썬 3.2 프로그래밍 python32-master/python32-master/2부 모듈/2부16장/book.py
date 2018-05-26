@@ -7,6 +7,7 @@ loopFlag = 1
 xmlFD = -1
 BooksDoc = None
 
+
 #### Menu  implementation
 def printMenu():
     print("\nWelcome! Book Manager Program (xml version)") 
@@ -19,10 +20,11 @@ def printMenu():
     print("sEarch Book Title: e")
     print("Make html: m")
     print("==================")
-    
+
+
 def launcherFunction(menu): # 프레임워크
     global BooksDoc
-    if menu ==  'l':
+    if menu == 'l':
         BooksDoc = LoadXMLFromFile()
     elif menu == 'q':
         QuitBookMgr()
@@ -46,38 +48,43 @@ def launcherFunction(menu): # 프레임워크
     else:
         print ("error : unknow menu key")
 
+
 #### xml function implementation
 def LoadXMLFromFile(): # xml파일 로드
-    fileName = str(input ("please input file name to load :"))  # 읽어올 파일경로를 입력 받습니다.
+    fileName = str(input("please input file name to load :"))  # 읽어올 파일경로를 입력 받습니다.
     global xmlFD
  
     try:
         xmlFD = open(fileName)   # xml 문서를 open합니다.
     except IOError:
-        print ("invalid file name or path")
+        print("invalid file name or path")
         return None
     else:
         try:
             dom = parse(xmlFD)   # XML 문서를 파싱합니다.
         except Exception:
-            print ("loading fail!!!")
+            print("loading fail!!!")
         else:
-            print ("XML Document loading complete")
+            print("XML Document loading complete")
             return dom
     return None
+
 
 def BooksFree():    # 파일 소멸
     if checkDocument():
         BooksDoc.unlink()   # minidom 객체 해제합니다.
-     
+
+
 def QuitBookMgr():  # 메인루프 끝냄
     global loopFlag
     loopFlag = 0
     BooksFree()
 
+
 def PrintDOMtoXML():    # 파일이 있는지 확인 후 출력
     if checkDocument():
         print(BooksDoc.toxml())
+
 
 def PrintBookList(tags):
     global BooksDoc
@@ -92,7 +99,8 @@ def PrintBookList(tags):
             for atom in subitems:
                 if atom.nodeName in tags:
                     print("title=", atom.firstChild.nodeValue)  # 책 목록을 출력 합니다.
-                
+
+
 def AddBook(bookdata):
     global BooksDoc
     if not checkDocument() :
@@ -119,11 +127,12 @@ def AddBook(bookdata):
         newBook.appendChild(titleEle)
         booklist = BooksDoc.firstChild
     except Exception:
-        print ("append child fail- please,check the parent element & node!!!")
+        print("append child fail- please,check the parent element & node!!!")
         return None
     else:
         if booklist != None:
             booklist.appendChild(newBook)
+
 
 def SearchBookTitle(keyword):
     global BooksDoc
@@ -134,17 +143,18 @@ def SearchBookTitle(keyword):
     try:
         tree = ElementTree.fromstring(str(BooksDoc.toxml()))
     except Exception:
-        print ("Element Tree parsing Error : maybe the xml document is not corrected.")
+        print("Element Tree parsing Error : maybe the xml document is not corrected.")
         return None
         
     # Book 엘리먼트 리스트를 가져 옵니다.
     bookElements = tree.getiterator("book") 
     for item in bookElements:
         strTitle = item.find("title")
-        if (strTitle.text.find(keyword) >=0 ):
+        if strTitle.text.find(keyword) >=0 :
             retlist.append((item.attrib["ISBN"], strTitle.text))
     
     return retlist    
+
 
 def MakeHtmlDoc(BookList):
     from xml.dom.minidom import getDOMImplementation
@@ -176,7 +186,7 @@ def MakeHtmlDoc(BookList):
         # title 부분을 생성합니다.
         p = newdoc.createElement('p')
         # 텍스트 노드를 만듭니다.
-        titleText= newdoc.createTextNode("Title:" + bookitem[1])
+        titleText = newdoc.createTextNode("Title:" + bookitem[1])
         p.appendChild(titleText)
 
         body.appendChild(p)
@@ -186,11 +196,13 @@ def MakeHtmlDoc(BookList):
     top_element.appendChild(body)
     
     return newdoc.toxml()
-    
+
+
 def printBookList(blist):
     for res in blist:
         print (res)
-    
+
+
 def checkDocument():
     global BooksDoc
     if BooksDoc == None:
@@ -200,9 +212,9 @@ def checkDocument():
   
 
 ##### run #####
-while(loopFlag > 0):
+while loopFlag > 0:
     printMenu()
-    menuKey = str(input ('select menu :'))
+    menuKey = str(input('select menu :'))
     launcherFunction(menuKey)
 else:
     print ("Thank you! Good Bye")
