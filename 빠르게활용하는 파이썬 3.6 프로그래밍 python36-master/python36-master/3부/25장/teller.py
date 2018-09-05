@@ -63,7 +63,10 @@ def handle(msg):
     text = msg['text']
     args = text.split(' ')
 
-    if text.startswith('지역') and len(args)>1:
+    if text.startswith('거래') and len(args) > 1:
+        print('try to 거래', args[1])
+        replyAptData(args[1], chat_id, args[2])
+    elif text.startswith('지역') and len(args)>1:
         print('try to 지역', args[1])
         replyAptData( '201705', chat_id, args[1] )
     elif text.startswith('저장')  and len(args)>1:
